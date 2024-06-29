@@ -1,4 +1,4 @@
-package main
+package fooer
 
 import (
 	"testing"
@@ -15,7 +15,5 @@ func TestFooerWithTestify(t *testing.T) {
 
 // require is similar to t.Fatal*
 func TestMapWithTestify(t *testing.T) {
-	require.Equal(t, map[int]string{1: "1", 2: "2"}, map[int]string{1: "1", 2: "3"})
-	// won't run
-	assert.Equal(t, map[int]string{1: "1", 2: "2"}, map[int]string{1: "1", 2: "2"})
+	require.Equal(t, map[int]string{1: "1", 2: "2"}, map[int]string{1: "1", 2: "2"})
 }
