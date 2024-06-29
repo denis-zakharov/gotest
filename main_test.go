@@ -47,6 +47,7 @@ func TestDoubleHander(t *testing.T) {
 				}
 				return
 			}
+
 			if res.StatusCode != http.StatusOK {
 				t.Fatalf("expected status 200/OK; got %v", res.StatusCode)
 			}

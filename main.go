@@ -8,8 +8,13 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/double", doubleHandler)
-	log.Fatal(http.ListenAndServe("localhost:8080", nil))
+	log.Fatal(http.ListenAndServe("localhost:8080", mux()))
+}
+
+func mux() http.Handler {
+	r := http.NewServeMux()
+	r.HandleFunc("/double", doubleHandler)
+	return r
 }
 
 func doubleHandler(w http.ResponseWriter, r *http.Request) {
