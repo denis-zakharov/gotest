@@ -63,3 +63,61 @@ func TestDoubleHander(t *testing.T) {
 		})
 	}
 }
+
+func TestRouting(t *testing.T) {
+	mux := mux()
+	srv := httptest.NewServer(mux)
+	defer srv.Close()
+
+	tt := []struct {
+		name    string
+		path    string
+		value   string
+		doubled int
+		status  int
+		err     string
+	}{
+		{name: "not routed", path: "/unknown", value: "any", status: http.StatusNotFound, err: "404 page not found\n"},
+		{name: "double of two", path: "/double", value: "2", doubled: 4, status: http.StatusOK},
+		{name: "missing value", path: "/double", value: "", status: http.StatusBadRequest, err: "missing value\n"},
+		{name: "double of string", path: "/double", value: "string", status: http.StatusBadRequest, err: "not a number: string\n"},
+	}
+
+	for _, tc := range tt {
+		t.Run(tc.name, func(t *testing.T) {
+			res, err := http.Get(srv.URL + tc.path + "?v=" + tc.value)
+			if err != nil {
+				t.Fatalf("could not send request: %v", err)
+			}
+			defer res.Body.Close()
+
+			b, err := io.ReadAll(res.Body)
+			if err != nil {
+				t.Fatalf("could not read response: %v", err)
+			}
+
+			if tc.err != "" {
+				if res.StatusCode != tc.status {
+					t.Errorf("expected status %v; got %v", tc.status, res.StatusCode)
+				}
+				if msg := string(b); msg != tc.err {
+					t.Errorf("expected msg %q; got %q", tc.err, msg)
+				}
+				return
+			}
+
+			if res.StatusCode != http.StatusOK {
+				t.Fatalf("expected status 200/OK; got %v", res.StatusCode)
+			}
+
+			d, err := strconv.Atoi(string(b))
+			if err != nil {
+				t.Fatalf("expected an integer; got %s", b)
+			}
+
+			if d != tc.doubled {
+				t.Errorf("expected double to be %v; got %v", tc.doubled, d)
+			}
+		})
+	}
+}
