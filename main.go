@@ -24,5 +24,5 @@ func doubleHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "not a number: "+text, http.StatusBadRequest)
 	}
 
-	fmt.Fprintln(w, v*2)
+	fmt.Fprint(w, v*2)
 }
