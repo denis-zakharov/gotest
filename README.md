@@ -45,3 +45,11 @@ Use `perf/cmd` to analyse results with `benchstat` and `benchsave`.
 ```
 go test -benchmem -bench
 ```
+
+# Writing Fuzz Tests
+The test function:
+- accepts `testing.F` as the unique parameter;
+- defines initial values (`seed corpus`), with the `f.Add()` method;
+- defines a `fuzz target`.
+
+See also: https://go.dev/doc/tutorial/fuzz
