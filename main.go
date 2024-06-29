@@ -22,6 +22,7 @@ func doubleHandler(w http.ResponseWriter, r *http.Request) {
 	v, err := strconv.Atoi(text)
 	if err != nil {
 		http.Error(w, "not a number: "+text, http.StatusBadRequest)
+		return
 	}
 
 	fmt.Fprint(w, v*2)
