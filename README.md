@@ -53,3 +53,10 @@ The test function:
 - defines a `fuzz target`.
 
 See also: https://go.dev/doc/tutorial/fuzz
+
+# The Testigy Package
+
+Install: `go get github.com/stretchr/testify`
+
+The testify package provides assertions and mocks familiar to users
+of JUnit for Java and Jasmine for NodeJS and improves readability.
